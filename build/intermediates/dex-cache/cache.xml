@@ -2,6 +2,20 @@
 <items version="2" >
 
     <item
+        jar="/Users/yiqin/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/Users/yiqin/Desktop/csgerber-and2015_reminders_base-42f258f7fba4/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-851e18b9355105a8295503156748f96033879cb3.jar" />
+    </item>
+    <item
+        jar="/Users/yiqin/protodos/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/yiqin/protodos/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-d106c38adef2b35100f39603214f7404552d4e35.jar" />
+    </item>
+    <item
         jar="/Users/yiqin/Desktop/csgerber-and2015_reminders_base-42f258f7fba4/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -9,11 +23,18 @@
         <dex dex="/Users/yiqin/Desktop/csgerber-and2015_reminders_base-42f258f7fba4/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-7d1db5580b267e221caf49f8cbe1f19bf62f3bea.jar" />
     </item>
     <item
-        jar="/Users/yiqin/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jar="/Users/yiqin/protodos/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="/Users/yiqin/Desktop/csgerber-and2015_reminders_base-42f258f7fba4/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-851e18b9355105a8295503156748f96033879cb3.jar" />
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/Users/yiqin/protodos/app/build/intermediates/pre-dexed/debug/classes-2b2ccbb73fff764bbdccd3396adc0d7a7be8c8f4.jar" />
+    </item>
+    <item
+        jar="/Users/yiqin/protodos/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/Users/yiqin/protodos/app/build/intermediates/pre-dexed/debug/classes-d0851f414664b5ad42bbe234e9d78ffc7edf8083.jar" />
     </item>
     <item
         jar="/Users/yiqin/Desktop/csgerber-and2015_reminders_base-42f258f7fba4/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"

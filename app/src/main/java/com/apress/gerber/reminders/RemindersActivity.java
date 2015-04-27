@@ -77,6 +77,8 @@ public class RemindersActivity extends ActionBarActivity {
         mDbAdapter.createReminder("Call accountant about tax returns", false);
         mDbAdapter.createReminder("Buy 300,000 shares of Google", false);
         mDbAdapter.createReminder("Call the Dalai Lama back", true);
+
+        
     }
 
 
