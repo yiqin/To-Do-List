@@ -45,10 +45,10 @@ public class RemindersActivity extends ActionBarActivity {
         mDbAdapter.open();
         if (savedInstanceState == null) {
             //Clean all data
-            // mDbAdapter.deleteAllReminders();
+            mDbAdapter.deleteAllReminders();
 
             //Add some data
-            // insertSomeReminders();
+            insertSomeReminders();
         }
 
         updateListView();
@@ -76,7 +76,7 @@ public class RemindersActivity extends ActionBarActivity {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_edit_reminder:
-                openDialogOfReminder(false, selectedReminderId);
+                openDialogOfReminder(false);
                 return true;
             case R.id.menu_delete_reminder:
                 mDbAdapter.deleteReminderById(selectedReminderId);
@@ -136,7 +136,7 @@ public class RemindersActivity extends ActionBarActivity {
         mListView.setAdapter(mCursorAdapter);
     }
 
-    private void openDialogOfReminder(final boolean isCreate, int id){
+    private void openDialogOfReminder(final boolean isCreate){
 
         LayoutInflater li = LayoutInflater.from(RemindersActivity.this);
         View reminderDialogView = li.inflate(R.layout.reminder_dialog, null);
@@ -156,14 +156,13 @@ public class RemindersActivity extends ActionBarActivity {
             alertDialogBuilder.setMessage("Edit Reminder");
             positiveButtonString = "Confirm";
 
-            final Reminder reminder = mDbAdapter.fetchReminderById(id);
-
+            Reminder reminder = mDbAdapter.fetchReminderById(selectedReminderId);
             userInput.setText(reminder.getContent());
             if (reminder.getImportant()==0){
-                isImportant.setClickable(false);
+                isImportant.setChecked(false);
             }
             else {
-                isImportant.setClickable(true);
+                isImportant.setChecked(true);
             }
         }
 
@@ -180,7 +179,10 @@ public class RemindersActivity extends ActionBarActivity {
                                 if (isCreate) {
                                     mDbAdapter.createReminder(userInput.getText().toString(), isImportant.isChecked());
                                 } else {
-                                    // mDbAdapter.updateReminder(reminder);
+                                    Reminder reminder = mDbAdapter.fetchReminderById(selectedReminderId);
+                                    reminder.setContent(userInput.getText().toString());
+                                    reminder.setImportant(isImportant.isChecked()? 1 : 0);
+                                    mDbAdapter.updateReminder(reminder);
                                 }
                                 updateListView();
                             }
@@ -211,7 +213,7 @@ public class RemindersActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case R.id.action_new:
                 // Create New Reminder
-                openDialogOfReminder(true, -1);
+                openDialogOfReminder(true);
                 return true;
             case R.id.action_exit:
                 finish();
