@@ -64,6 +64,13 @@ public class RemindersActivity extends ActionBarActivity {
         });
 
         registerForContextMenu(mListView);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Reminder");
+        getSupportActionBar().setIcon(R.drawable.todo);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
     }
 
     @Override
