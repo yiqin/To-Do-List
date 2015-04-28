@@ -22,7 +22,7 @@ import android.widget.ToggleButton;
 
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-
+import android.text.Html;
 
 public class RemindersActivity extends ActionBarActivity {
 
@@ -149,11 +149,12 @@ public class RemindersActivity extends ActionBarActivity {
 
         String positiveButtonString = "";
         if (isCreate) {
-            alertDialogBuilder.setMessage("Create Reminder");
+            alertDialogBuilder.setTitle("Create Reminder");
             positiveButtonString = "Create";
+
         }
         else {
-            alertDialogBuilder.setMessage("Edit Reminder");
+            alertDialogBuilder.setTitle("Edit Reminder");
             positiveButtonString = "Confirm";
 
             Reminder reminder = mDbAdapter.fetchReminderById(selectedReminderId);
