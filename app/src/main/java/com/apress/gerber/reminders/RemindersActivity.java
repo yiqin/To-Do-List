@@ -49,6 +49,8 @@ public class RemindersActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                
+
                 // get prompts.xml view
                 LayoutInflater li = LayoutInflater.from(RemindersActivity.this);
                 View promptsView = li.inflate(R.layout.prompts, null);
@@ -61,6 +63,7 @@ public class RemindersActivity extends ActionBarActivity {
 
                 final EditText userInput = (EditText) promptsView
                         .findViewById(R.id.dialog_userInput);
+                userInput.setText("hi");
                 final ToggleButton isImportant = (ToggleButton) promptsView.findViewById(R.id.dialog_togglebutton);
 
                 // set dialog message
