@@ -11,6 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.EditText;
+import android.view.LayoutInflater;
+import android.widget.ToggleButton;
 
 public class RemindersActivity extends ActionBarActivity {
 
@@ -45,25 +49,47 @@ public class RemindersActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(RemindersActivity.this);
-                builder.setMessage("Write your message here.");
-                builder.setCancelable(true);
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                // get prompts.xml view
+                LayoutInflater li = LayoutInflater.from(RemindersActivity.this);
+                View promptsView = li.inflate(R.layout.prompts, null);
 
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        RemindersActivity.this);
 
-                AlertDialog alert = builder.create();
-                alert.show();
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.dialog_userInput);
+                final ToggleButton isImportant = (ToggleButton) promptsView.findViewById(R.id.dialog_togglebutton);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and save it to database. Then update the list view.
+                                        mDbAdapter.createReminder(userInput.getText().toString(), isImportant.isChecked());
+                                        updateListView();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+
+
+
 
 
             }
