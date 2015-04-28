@@ -156,11 +156,11 @@ public class RemindersActivity extends ActionBarActivity {
 
         String positiveButtonString = "";
         if (isCreate) {
-            alertDialogBuilder.setTitle("Create Reminder");
+            alertDialogBuilder.setTitle(Html.fromHtml("<font color='#00ff00'>Create Reminder</font>"));
             positiveButtonString = "Create";
         }
         else {
-            alertDialogBuilder.setTitle("Edit Reminder");
+            alertDialogBuilder.setTitle(Html.fromHtml("<font color='#0000FF'>Edit Reminder</font>"));
             positiveButtonString = "Confirm";
 
             Reminder reminder = mDbAdapter.fetchReminderById(selectedReminderId);
@@ -203,7 +203,6 @@ public class RemindersActivity extends ActionBarActivity {
 
         // create alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
-
         // show it
         alertDialog.show();
     }
