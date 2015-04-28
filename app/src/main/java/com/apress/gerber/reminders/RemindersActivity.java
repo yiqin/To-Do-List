@@ -21,48 +21,24 @@ public class RemindersActivity extends ActionBarActivity {
         setContentView(R.layout.activity_reminders);
         mListView = (ListView) findViewById(R.id.reminders_list_view);
         mListView.setDivider(null);
+
+        
+
         mDbAdapter = new RemindersDbAdapter(this);
         mDbAdapter.open();
         if (savedInstanceState == null) {
             //Clean all data
-            mDbAdapter.deleteAllReminders();
+            // mDbAdapter.deleteAllReminders();
+
             //Add some data
-            insertSomeReminders();
+            // insertSomeReminders();
         }
 
-        Cursor cursor = mDbAdapter.fetchAllReminders();
-
-        //from columns defined in the db
-        String[] from = new String[]{
-                RemindersDbAdapter.COL_CONTENT
-        };
-
-        //to the ids of views in the layout
-        int[] to = new int[]{
-                R.id.row_text
-        };
-
-        mCursorAdapter = new RemindersSimpleCursorAdapter(
-                //context
-                RemindersActivity.this,
-                //the layout of the row
-                R.layout.reminders_row,
-                //cursor
-                cursor,
-                //from columns defined in the db
-                from,
-                //to the ids of views in the layout
-                to,
-                //flag - not used
-                0);
-
-
-        //the cursorAdapter (controller) is now updating the listView (view) with data from the db (model)
-        mListView.setAdapter(mCursorAdapter);
+        updateListView();
     }
 
     private void insertSomeReminders() {
-        // mDbAdapter.createReminder("Buy Learn Android Studio", true);
+        mDbAdapter.createReminder("Buy Learn Android Studio", true);
         mDbAdapter.createReminder("Send Dad birthday gift", false);
         mDbAdapter.createReminder("Dinner at the Gage on Friday", false);
         mDbAdapter.createReminder("String squash racket", false);
@@ -78,9 +54,36 @@ public class RemindersActivity extends ActionBarActivity {
         mDbAdapter.createReminder("Buy 300,000 shares of Google", false);
         mDbAdapter.createReminder("Call the Dalai Lama back", true);
 
-
     }
 
+    private void updateListView() {
+        Cursor cursor = mDbAdapter.fetchAllReminders();
+        //from columns defined in the db
+        String[] from = new String[]{
+                RemindersDbAdapter.COL_CONTENT
+        };
+
+        //to the ids of views in the layout
+        int[] to = new int[]{
+                R.id.row_text
+        };
+        mCursorAdapter = new RemindersSimpleCursorAdapter(
+                //context
+                RemindersActivity.this,
+                //the layout of the row
+                R.layout.reminders_row,
+                //cursor
+                cursor,
+                //from columns defined in the db
+                from,
+                //to the ids of views in the layout
+                to,
+                //flag - not used
+                0);
+
+        //the cursorAdapter (controller) is now updating the listView (view) with data from the db (model)
+        mListView.setAdapter(mCursorAdapter);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,6 +98,9 @@ public class RemindersActivity extends ActionBarActivity {
             case R.id.action_new:
                 //create new Reminder
                 Log.d(getLocalClassName(),"create new Reminder");
+                mDbAdapter.createReminder("Hello Assignmnet 2", false);
+                updateListView();
+
                 return true;
             case R.id.action_exit:
                 finish();

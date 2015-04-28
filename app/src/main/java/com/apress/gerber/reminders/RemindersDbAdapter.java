@@ -125,6 +125,7 @@ public class RemindersDbAdapter {
         mDb.delete(TABLE_NAME, null, null);
     }
 
+    // SQLite API
     //static inner class
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
