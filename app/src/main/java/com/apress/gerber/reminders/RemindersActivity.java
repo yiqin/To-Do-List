@@ -65,9 +65,6 @@ public class RemindersActivity extends ActionBarActivity {
 
         registerForContextMenu(mListView);
 
-        // ActionBar ab= getActionBar();
-        // ab.setLogo(R.drawable.todo);
-
     }
 
 
