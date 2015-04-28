@@ -1,13 +1,16 @@
 package com.apress.gerber.reminders;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
-
 
 public class RemindersActivity extends ActionBarActivity {
 
@@ -22,7 +25,7 @@ public class RemindersActivity extends ActionBarActivity {
         mListView = (ListView) findViewById(R.id.reminders_list_view);
         mListView.setDivider(null);
 
-        
+
 
         mDbAdapter = new RemindersDbAdapter(this);
         mDbAdapter.open();
@@ -35,6 +38,36 @@ public class RemindersActivity extends ActionBarActivity {
         }
 
         updateListView();
+
+
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(RemindersActivity.this);
+                builder.setMessage("Write your message here.");
+                builder.setCancelable(true);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
+            }
+        });
     }
 
     private void insertSomeReminders() {
