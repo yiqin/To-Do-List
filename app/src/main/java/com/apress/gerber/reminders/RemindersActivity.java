@@ -1,5 +1,6 @@
 package com.apress.gerber.reminders;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -35,6 +36,7 @@ public class RemindersActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_reminders);
         mListView = (ListView) findViewById(R.id.reminders_list_view);
         mListView.setDivider(null);
@@ -62,6 +64,10 @@ public class RemindersActivity extends ActionBarActivity {
         });
 
         registerForContextMenu(mListView);
+
+        // ActionBar ab= getActionBar();
+        // ab.setLogo(R.drawable.todo);
+
     }
 
 
@@ -144,14 +150,12 @@ public class RemindersActivity extends ActionBarActivity {
         final ToggleButton isImportant = (ToggleButton) reminderDialogView.findViewById(R.id.dialog_togglebutton);
 
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                RemindersActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RemindersActivity.this);
 
         String positiveButtonString = "";
         if (isCreate) {
             alertDialogBuilder.setTitle("Create Reminder");
             positiveButtonString = "Create";
-
         }
         else {
             alertDialogBuilder.setTitle("Edit Reminder");
