@@ -1,14 +1,18 @@
 package com.apress.gerber.reminders;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,11 +20,17 @@ import android.widget.EditText;
 import android.view.LayoutInflater;
 import android.widget.ToggleButton;
 
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+
+
 public class RemindersActivity extends ActionBarActivity {
 
     private ListView mListView;
     private RemindersDbAdapter mDbAdapter;
     private RemindersSimpleCursorAdapter mCursorAdapter;
+
+    private int selectedReminderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +39,7 @@ public class RemindersActivity extends ActionBarActivity {
         mListView = (ListView) findViewById(R.id.reminders_list_view);
         mListView.setDivider(null);
 
-
+        selectedReminderId = -1;
 
         mDbAdapter = new RemindersDbAdapter(this);
         mDbAdapter.open();
@@ -43,60 +53,38 @@ public class RemindersActivity extends ActionBarActivity {
 
         updateListView();
 
-
-
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                
-
-                // get prompts.xml view
-                LayoutInflater li = LayoutInflater.from(RemindersActivity.this);
-                View promptsView = li.inflate(R.layout.prompts, null);
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        RemindersActivity.this);
-
-                // set prompts.xml to alertdialog builder
-                alertDialogBuilder.setView(promptsView);
-
-                final EditText userInput = (EditText) promptsView
-                        .findViewById(R.id.dialog_userInput);
-                userInput.setText("hi");
-                final ToggleButton isImportant = (ToggleButton) promptsView.findViewById(R.id.dialog_togglebutton);
-
-                // set dialog message
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        // get user input and save it to database. Then update the list view.
-                                        mDbAdapter.createReminder(userInput.getText().toString(), isImportant.isChecked());
-                                        updateListView();
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // show it
-                alertDialog.show();
-
-
-
-
-
-
+                selectedReminderId = (int)id;
+                openContextMenu(view);
             }
         });
+
+        registerForContextMenu(mListView);
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.edit_delete_reminder, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_edit_reminder:
+                openDialogOfReminder(false, selectedReminderId);
+                return true;
+            case R.id.menu_delete_reminder:
+                mDbAdapter.deleteReminderById(selectedReminderId);
+                updateListView();
+                return true;
+            default:
+                return false;
+        }
     }
 
     private void insertSomeReminders() {
@@ -118,6 +106,7 @@ public class RemindersActivity extends ActionBarActivity {
 
     }
 
+    // Update List View
     private void updateListView() {
         Cursor cursor = mDbAdapter.fetchAllReminders();
         //from columns defined in the db
@@ -147,6 +136,69 @@ public class RemindersActivity extends ActionBarActivity {
         mListView.setAdapter(mCursorAdapter);
     }
 
+    private void openDialogOfReminder(final boolean isCreate, int id){
+
+        LayoutInflater li = LayoutInflater.from(RemindersActivity.this);
+        View reminderDialogView = li.inflate(R.layout.reminder_dialog, null);
+        final EditText userInput = (EditText) reminderDialogView.findViewById(R.id.dialog_userInput);
+        final ToggleButton isImportant = (ToggleButton) reminderDialogView.findViewById(R.id.dialog_togglebutton);
+
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                RemindersActivity.this);
+
+        String positiveButtonString = "";
+        if (isCreate) {
+            alertDialogBuilder.setMessage("Create Reminder");
+            positiveButtonString = "Create";
+        }
+        else {
+            alertDialogBuilder.setMessage("Edit Reminder");
+            positiveButtonString = "Confirm";
+
+            final Reminder reminder = mDbAdapter.fetchReminderById(id);
+
+            userInput.setText(reminder.getContent());
+            if (reminder.getImportant()==0){
+                isImportant.setClickable(false);
+            }
+            else {
+                isImportant.setClickable(true);
+            }
+        }
+
+        // set prompts.xml to alert dialog builder
+        alertDialogBuilder.setView(reminderDialogView);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(positiveButtonString,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // get user input and save it to database. Then update the list view.
+                                if (isCreate) {
+                                    mDbAdapter.createReminder(userInput.getText().toString(), isImportant.isChecked());
+                                } else {
+                                    // mDbAdapter.updateReminder(reminder);
+                                }
+                                updateListView();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -158,11 +210,8 @@ public class RemindersActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_new:
-                //create new Reminder
-                Log.d(getLocalClassName(),"create new Reminder");
-                mDbAdapter.createReminder("Hello Assignmnet 2", false);
-                updateListView();
-
+                // Create New Reminder
+                openDialogOfReminder(true, -1);
                 return true;
             case R.id.action_exit:
                 finish();
@@ -171,4 +220,6 @@ public class RemindersActivity extends ActionBarActivity {
                 return false;
         }
     }
+
+
 }
