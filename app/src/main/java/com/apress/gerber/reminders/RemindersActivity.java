@@ -62,7 +62,7 @@ public class RemindersActivity extends ActionBarActivity {
     }
 
     private void insertSomeReminders() {
-        mDbAdapter.createReminder("Buy Learn Android Studio", true);
+        // mDbAdapter.createReminder("Buy Learn Android Studio", true);
         mDbAdapter.createReminder("Send Dad birthday gift", false);
         mDbAdapter.createReminder("Dinner at the Gage on Friday", false);
         mDbAdapter.createReminder("String squash racket", false);
@@ -78,7 +78,7 @@ public class RemindersActivity extends ActionBarActivity {
         mDbAdapter.createReminder("Buy 300,000 shares of Google", false);
         mDbAdapter.createReminder("Call the Dalai Lama back", true);
 
-        
+
     }
 
 
