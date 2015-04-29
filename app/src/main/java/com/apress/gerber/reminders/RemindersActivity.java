@@ -60,9 +60,13 @@ public class RemindersActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedReminderId = (int)id;
                 openContextMenu(view);
+                // We can also use AlertDialog.Builer here.
+                // We still need to add setOnItemClickListener...
             }
         });
 
+        // context menu on API 11 and higher.
+        // If you want all users can use, you can create another xml for API 11 and hgiher.
         registerForContextMenu(mListView);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -126,6 +130,9 @@ public class RemindersActivity extends ActionBarActivity {
         int[] to = new int[]{
                 R.id.row_text
         };
+
+        // Binding the data
+        // We can see MVC model here.
         mCursorAdapter = new RemindersSimpleCursorAdapter(
                 //context
                 RemindersActivity.this,
@@ -148,9 +155,10 @@ public class RemindersActivity extends ActionBarActivity {
 
         LayoutInflater li = LayoutInflater.from(RemindersActivity.this);
         View reminderDialogView = li.inflate(R.layout.reminder_dialog, null);
+
+        // final is necessary.
         final EditText userInput = (EditText) reminderDialogView.findViewById(R.id.dialog_userInput);
         final ToggleButton isImportant = (ToggleButton) reminderDialogView.findViewById(R.id.dialog_togglebutton);
-
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RemindersActivity.this);
 
