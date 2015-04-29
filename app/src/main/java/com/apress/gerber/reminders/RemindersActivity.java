@@ -65,10 +65,10 @@ public class RemindersActivity extends ActionBarActivity {
 
         registerForContextMenu(mListView);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Reminder");
-        getSupportActionBar().setIcon(R.drawable.todo);
+        getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
     }
@@ -223,6 +223,9 @@ public class RemindersActivity extends ActionBarActivity {
                 return true;
             case R.id.action_exit:
                 finish();
+                return true;
+            case android.R.id.home:
+                openDialogOfReminder(true);
                 return true;
             default:
                 return false;
