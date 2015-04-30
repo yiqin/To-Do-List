@@ -58,8 +58,13 @@ public class RemindersActivity extends ActionBarActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedReminderId = (int)id;
+                // id and position different.
+                // id is the row id of the item that was clicked.
+                // position is the value in the adapter.
+
+                selectedReminderId = (int) id;
                 openContextMenu(view);
+
                 // We can also use AlertDialog.Builer here.
                 // We still need to add setOnItemClickListener...
             }
@@ -75,7 +80,15 @@ public class RemindersActivity extends ActionBarActivity {
         getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-    }
+
+        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        //     mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        //     mListView.setMultiChoiceModeListener(..........)
+        //
+        // }
+
+
+    }// end onCreate()
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -149,6 +162,9 @@ public class RemindersActivity extends ActionBarActivity {
 
         //the cursorAdapter (controller) is now updating the listView (view) with data from the db (model)
         mListView.setAdapter(mCursorAdapter);
+
+        // Another way to change Cursor....
+        // We can also try notifyDataSetChanged()
     }
 
     private void openDialogOfReminder(final boolean isCreate){

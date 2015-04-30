@@ -8,6 +8,8 @@ public class Reminder {
 
     private int mId;
     private String mContent;
+
+    // The boolean value doesn't work here.
     private int mImportant;
 
     public Reminder(int id, String content, int important) {
